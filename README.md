@@ -54,6 +54,8 @@ Run project
 | :-------- | :------- | :------------------------- |
 | `file` | `file` | **Required**. The file to be uploaded for prediction  |
 
+You can view this [document](https://documenter.getpostman.com/view/23531718/2sAYBUDYDF) for an example of the API. 
+
 
 
 ## Authors
