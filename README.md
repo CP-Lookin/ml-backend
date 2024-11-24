@@ -19,6 +19,19 @@ Create virtual env
 ```bash
   python3 -m venv venv
 ```
+
+Activate virtual env
+- Mac / Linux
+```bash
+  source venv/bin/activate
+```
+
+- Windows
+```bash
+  .\venv\Scripts\activate
+
+```
+
 Install all libraries
 ```bash
   pip install requirements.txt
