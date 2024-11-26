@@ -1,10 +1,20 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 import numpy as np
 import tensorflow as tf
 import logging
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load the model 
 try:
@@ -17,7 +27,7 @@ class_names = ['oval', 'round', 'square']
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello World from Lookin App!"}
 
 @app.post("/predict/", response_model=dict, status_code=200)
 async def predict(file: UploadFile = File(...)):
