@@ -19,8 +19,8 @@ app.add_middleware(
 
 # Load the model 
 try:
-    face_shape_model = tf.keras.models.load_model('./model/tl_vgg16_2.h5')
-    gender_model = tf.keras.models.load_model('./model/gender_tl_vgg16.h5')
+    face_shape_model = tf.keras.models.load_model('./model/face_shape_vgg16.keras')
+    gender_model = tf.keras.models.load_model('./model/gender.h5')
 except Exception as e:
     logging.error(f"Error loading model: {e}")
     raise RuntimeError("Failed to load model")

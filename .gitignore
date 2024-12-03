@@ -1,2 +1,5 @@
 mlenv/
 __pycache__
+
+*.h5
+*.keras
