@@ -16,14 +16,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # Load the model 
 try:
-    model = tf.keras.models.load_model('./model/tl_vgg16_2.h5')
+    face_shape_model = tf.keras.models.load_model('./model/tl_vgg16_2.h5')
+    gender_model = tf.keras.models.load_model('./model/gender_tl_vgg16.h5')
 except Exception as e:
     logging.error(f"Error loading model: {e}")
     raise RuntimeError("Failed to load model")
 
 class_names = ['oval', 'round', 'square']
+gender_class_names = ['female', 'male']
 
 @app.get("/")
 async def root():
@@ -44,10 +47,23 @@ async def predict(file: UploadFile = File(...)):
         image = np.array(image) / 255.0
         image = np.expand_dims(image, axis=0)
         
-        predictions = model.predict(image)
-        predicted_class = class_names[np.argmax(predictions)]
+        face_shape_predictions = face_shape_model.predict(image)
+        gender_predictions = gender_model.predict(image)
+        
+        predicted_face_shape = class_names[np.argmax(face_shape_predictions)]
+        if gender_predictions[0] > 0.5:
+            predicted_gender = "Male"
+        else:
+            predicted_gender = "Female"
     except Exception as e:
         logging.error(f"Error processing image: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
         
-    return {"predicted_class": predicted_class}
+    return {
+        "code" : 200,
+        "message": "Prediction successful",
+        "data": {
+            "predicted_face_shape": predicted_face_shape,
+            "predicted_gender": predicted_gender
+        }
+    }
